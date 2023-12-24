@@ -7,27 +7,37 @@ import { parse } from 'vue/compiler-sfc';
             return{
                input1 : 0,
                input2 : 0,
-               resultado : 0
+               resultado : 0,
+               operacaoSelecionada:'somar'
 
             };
         },
         methods:{
-            somar(){
-                this.resultado = parseFloat(this.input1) + parseFloat(this.input2);
-            },
-            subtrair(){
-                this.resultado = parseFloat(this.input1) - parseFloat(this.input2);
-            },
-            dividir(){
-                if (parseFloat(this.input2) !== 0) {
-                    this.resultado = parseFloat(this.input1) / parseFloat(this.input2);
-                } else {
-                    this.resultado = "Não é possível dividir por zero";
+            realizarCalculo(){
+                switch(this.operacaoSelecionada){
+                    case 'somar':
+                    this.resultado = parseFloat(this.input1) + parseFloat(this.input2);
+                    break;
+
+                    case 'subtracao':
+                    this.resultado = parseFloat(this.input1) - parseFloat(this.input2);
+                    break;
+
+                    case 'divisao':
+                    if (parseFloat(this.input2) !== 0) {
+                        this.resultado = parseFloat(this.input1) / parseFloat(this.input2);
+                    } else {
+                        this.resultado = 'Não é possível dividir por zero';
+                    }
+                    break;
+
+                    case 'multiplicacao':
+                    this.resultado = parseFloat(this.input1) * parseFloat(this.input2);
+                    break;
+                    default:
+                    break;
                 }
-            },
-            multiplicar(){
-                this.resultado = parseFloat(this.input1) * parseFloat(this.input2);
-            },
+            }
         }
 
         }
@@ -43,11 +53,11 @@ import { parse } from 'vue/compiler-sfc';
         <input v-model="input2" class="n1" type="number"  required>
       </div>
       <div class="btns">
-        <select class="btn">
-            <option @click="somar"  value="soma"><span class="sinal">+</span></option>
-            <option @click="subtrair"  value="subtracao"><span class="sinal">-</span></option>
-            <option @click="dividir"  value="divisao"><span class="sinal">/</span></option>
-            <option @click="multiplicar"  value="multiplicacao"><span class="sinal">*</span></option>
+        <select class="btn" v-model="operacaoSelecionada" @change="realizarCalculo">
+            <option value="somar"> +</option>
+            <option value="subtracao"> -</option>
+            <option value="divisao">/</option>
+            <option value="multiplicacao">*</option>
         </select>
     </div>
 </div>
